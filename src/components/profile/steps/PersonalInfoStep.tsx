@@ -1,6 +1,10 @@
-import { Box, Typography, Button, TextField, Stack } from '@mui/material';
+import { Box, Typography, Button, TextField, Stack, IconButton } from '@mui/material';
 import { useState, ChangeEvent } from 'react';
 import { ProfileData } from '../ProfileSetup';
+import GoogleIcon from '@mui/icons-material/Google';
+import AppleIcon from '@mui/icons-material/Apple';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PrimaryButton from '../../common/PrimaryButton';
 
 interface PersonalInfoStepProps {
   data: ProfileData;
@@ -38,9 +42,8 @@ export default function PersonalInfoStep({ data, onUpdate, onNext, onBack }: Per
   return (
     <Box sx={{ py: 4 }}>
       <Typography
-        variant="h4"
-        gutterBottom
         sx={{
+          fontSize: '24px',
           fontWeight: 600,
           mb: 4,
           textAlign: 'center'
@@ -50,14 +53,84 @@ export default function PersonalInfoStep({ data, onUpdate, onNext, onBack }: Per
       </Typography>
 
       <Stack spacing={3} sx={{ maxWidth: 600, mx: 'auto' }}>
-        <TextField
-          label="Prénom"
-          fullWidth
-          value={formData.firstName}
-          onChange={handleChange('firstName')}
-          required
-        />
+        {/* Section Récupérer via */}
+        <Box>
+          <Typography
+            sx={{
+              fontSize: '19px',
+              fontWeight: 600,
+              mb: 2,
+              textAlign: 'center'
+            }}
+          >
+            Récupérer via :
+          </Typography>
 
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 2 }}>
+            <IconButton
+              sx={{
+                border: '1px solid #E0E0E0',
+                borderRadius: '12px',
+                p: 2,
+                '&:hover': {
+                  backgroundColor: '#f5f5f5'
+                }
+              }}
+            >
+              <GoogleIcon sx={{ fontSize: 32 }} />
+            </IconButton>
+
+            <IconButton
+              sx={{
+                border: '1px solid #E0E0E0',
+                borderRadius: '12px',
+                p: 2,
+                '&:hover': {
+                  backgroundColor: '#f5f5f5'
+                }
+              }}
+            >
+              <AppleIcon sx={{ fontSize: 32 }} />
+            </IconButton>
+
+            <IconButton
+              sx={{
+                border: '1px solid #E0E0E0',
+                borderRadius: '12px',
+                p: 2,
+                '&:hover': {
+                  backgroundColor: '#f5f5f5'
+                }
+              }}
+            >
+              <LinkedInIcon sx={{ fontSize: 32, color: '#0A66C2' }} />
+            </IconButton>
+          </Box>
+
+          <Typography
+            sx={{
+              fontSize: '17px',
+              fontWeight: 400,
+              textAlign: 'center',
+              mb: 1
+            }}
+          >
+            ou
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: '19px',
+              fontWeight: 600,
+              textAlign: 'center',
+              mb: 3
+            }}
+          >
+            Renseigner manuellement
+          </Typography>
+        </Box>
+
+        {/* Champs du formulaire */}
         <TextField
           label="Nom"
           fullWidth
@@ -67,12 +140,11 @@ export default function PersonalInfoStep({ data, onUpdate, onNext, onBack }: Per
         />
 
         <TextField
-          label="Date de naissance"
-          type="date"
+          label="Prénom"
           fullWidth
-          value={formData.dateOfBirth}
-          onChange={handleChange('dateOfBirth')}
-          InputLabelProps={{ shrink: true }}
+          value={formData.firstName}
+          onChange={handleChange('firstName')}
+          required
         />
 
         <TextField
@@ -82,16 +154,6 @@ export default function PersonalInfoStep({ data, onUpdate, onNext, onBack }: Per
           value={formData.email}
           onChange={handleChange('email')}
           required
-        />
-
-        <TextField
-          label="Bio / Description"
-          multiline
-          rows={4}
-          fullWidth
-          value={formData.description}
-          onChange={handleChange('description')}
-          placeholder="Parlez-nous de vous..."
         />
       </Stack>
 
@@ -108,18 +170,9 @@ export default function PersonalInfoStep({ data, onUpdate, onNext, onBack }: Per
         >
           Retour
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleNext}
-          sx={{
-            px: 4,
-            py: 1.5,
-            textTransform: 'none',
-            borderRadius: '20px'
-          }}
-        >
+        <PrimaryButton onClick={handleNext}>
           Suivant
-        </Button>
+        </PrimaryButton>
       </Box>
     </Box>
   );

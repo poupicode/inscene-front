@@ -1,4 +1,5 @@
-import { Box, Card, CardContent, Typography, Button } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
+import PrimaryButton from '../../common/PrimaryButton';
 
 interface WelcomeStepProps {
   onStart: () => void;
@@ -25,32 +26,55 @@ export default function WelcomeStep({ onStart }: WelcomeStepProps) {
       >
         <CardContent>
           <Typography
-            variant="h4"
-            gutterBottom
             sx={{
+              fontSize: '24px',
               fontWeight: 600,
               color: 'text.primary',
-              mb: 3
+              mb: 2
             }}
           >
             Pour commencer, créez votre profil
           </Typography>
 
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onStart}
+          <Typography
             sx={{
-              mt: 2,
-              px: 6,
-              py: 1.5,
-              fontSize: '1.1rem',
-              textTransform: 'none',
-              borderRadius: '20px'
+              fontSize: '17px',
+              fontWeight: 400,
+              color: 'text.primary',
+              mb: 2
             }}
           >
+            Plus votre profil sera complet, plus vous trouverez des offres pertinentes.
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: '17px',
+              fontWeight: 400,
+              color: 'text.primary',
+              mb: 3
+            }}
+          >
+            Cette étape prend moins de 5 minutes et vous fera gagner plus de 5 heures* sur votre recherche d'emploi
+          </Typography>
+
+          <PrimaryButton
+            fullWidth
+            onClick={onStart}
+            sx={{ mb: 2 }}
+          >
             Créer mon profil
-          </Button>
+          </PrimaryButton>
+
+          <Typography
+            sx={{
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#8c8c8c'
+            }}
+          >
+            *Ratio InScène : 1 min dépensée dans la mise à jour de votre profil = 1h gagnée dans votre recherche
+          </Typography>
         </CardContent>
       </Card>
     </Box>

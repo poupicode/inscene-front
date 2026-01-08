@@ -23,11 +23,6 @@ export default function ProgressBar({ progress }: ProgressBarProps) {
             }}
           />
         </Box>
-        <Box sx={{ minWidth: 50 }}>
-          <Typography variant="body2" color="text.secondary">
-            {`${Math.round(progress)}%`}
-          </Typography>
-        </Box>
       </Box>
     </Box>
   );

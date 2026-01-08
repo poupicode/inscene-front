@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import { Box } from '@mui/material';
 import WelcomeStep from './steps/WelcomeStep';
 import PersonalInfoStep from './steps/PersonalInfoStep';

@@ -13,6 +13,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { ReactElement } from 'react';
 
 const HomeIcon = () => (
   <Box
@@ -26,7 +27,13 @@ const HomeIcon = () => (
   />
 );
 
-const menuItems = [
+interface MenuItem {
+  label: string;
+  icon: ReactElement;
+  path: string;
+}
+
+const menuItems: MenuItem[] = [
   { label: 'Saved', icon: <BookmarkIcon />, path: '/saved' },
   { label: 'Notifications', icon: <NotificationsIcon />, path: '/notifications' },
   { label: 'Home', icon: <HomeIcon />, path: '/' },

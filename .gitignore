@@ -83,3 +83,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Claude artifacts
+c.claude

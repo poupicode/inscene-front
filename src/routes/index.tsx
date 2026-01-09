@@ -7,7 +7,8 @@ import Saved from '../pages/Saved';
 import Notifications from '../pages/Notifications';
 import Messages from '../pages/Messages';
 import Account from '../pages/Account';
-import Login from '@/pages/Login';
+import Login from '../pages/Login';
+import AnnouncementDetail from '../pages/AnnouncementDetail';
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ export const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
-      }
+      },
+      {
+        path: 'announcement/:id',
+        element: <AnnouncementDetail />,
+      },
     ],
   },
 ]);

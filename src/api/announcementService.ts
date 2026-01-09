@@ -39,6 +39,7 @@ function transformAnnouncementResponse(response: AnnouncementResponse): Announce
     title: response.title || 'Sans titre',
     description: response.description,
     author: {
+      id: response.author?.id,
       name: response.author?.email.split('@')[0] || 'Anonyme', // Utilise l'email comme nom temporaire
       avatar: response.author?.avatarUrl || null,
     },

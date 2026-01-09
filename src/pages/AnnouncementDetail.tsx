@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Box, Avatar, Stack, CircularProgress } from '@mui/material';
 import DetailLayout from '../components/layout/DetailLayout';
 import AnnouncementTags from '../components/announcement/AnnouncementTags';
@@ -13,6 +13,7 @@ import { Announcement } from '../types/announcement';
 
 export default function AnnouncementDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(false);
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,12 @@ export default function AnnouncementDetail() {
     setIsSaved((prev) => !prev);
   };
 
+  const handleAuthorClick = () => {
+    if (announcement?.author?.id) {
+      navigate(`/profile/${announcement.author.id}`);
+    }
+  };
+
   if (loading) {
     return (
       <DetailLayout>
@@ -68,7 +75,19 @@ export default function AnnouncementDetail() {
     <DetailLayout isSaved={isSaved} onToggleSave={handleToggleSave}>
       <Box sx={{ p: 2.5 }}>
         {/* Auteur avec avatar */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1.5, 
+            mb: 2,
+            cursor: announcement?.author?.id ? 'pointer' : 'default',
+            '&:hover': announcement?.author?.id ? {
+              opacity: 0.7,
+            } : {},
+          }}
+          onClick={handleAuthorClick}
+        >
           <Avatar
             src={announcement.author?.avatar || undefined}
             alt={announcement.author?.name}

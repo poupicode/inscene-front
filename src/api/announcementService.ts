@@ -52,6 +52,11 @@ function transformAnnouncementResponse(response: AnnouncementResponse): Announce
     minSalary: response.minSalary,
     maxSalary: response.maxSalary,
     applicantsCount: response.candidatesCount,
+    missionDetails: response.missionDetails,
+    advantages: response.advantages,
+    process: response.process,
+    profileRequired: response.profileRequired,
+    skillsRequired: response.skillsRequired,
   };
 }
 

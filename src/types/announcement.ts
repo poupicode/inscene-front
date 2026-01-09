@@ -18,4 +18,9 @@ export interface Announcement {
   minSalary?: number;
   maxSalary?: number;
   applicantsCount?: number;
+  missionDetails?: string;
+  advantages?: string;
+  process?: string;
+  profileRequired?: string;
+  skillsRequired?: string[];
 }

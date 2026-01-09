@@ -84,7 +84,7 @@ export default function AnnouncementCard({ announcement, isSaved = false, onTogg
         </Typography>
 
         {/* Tags + Urgent */}
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center', mb: 2 }}>
           <AnnouncementTags isUrgent={announcement.isUrgent} tags={announcement.tags} />
         </Box>
 

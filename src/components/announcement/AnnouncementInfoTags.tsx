@@ -44,7 +44,7 @@ export default function AnnouncementInfoTags({
   const salaryLabel = getSalaryLabel();
 
   return (
-    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+    <>
       {/* Localisation */}
       <Chip
         icon={<LocationOnIcon />}
@@ -100,6 +100,6 @@ export default function AnnouncementInfoTags({
           },
         }}
       />
-    </Box>
+    </>
   );
 }

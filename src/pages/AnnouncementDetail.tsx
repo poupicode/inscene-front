@@ -4,6 +4,9 @@ import { Typography, Box, Avatar, Stack, CircularProgress } from '@mui/material'
 import DetailLayout from '../components/layout/DetailLayout';
 import AnnouncementTags from '../components/announcement/AnnouncementTags';
 import AnnouncementInfoTags from '../components/announcement/AnnouncementInfoTags';
+import AnnouncementDetailsBlock from '../components/announcement/AnnouncementDetailsBlock';
+import AnnouncementProfileBlock from '../components/announcement/AnnouncementProfileBlock';
+import PrimaryButton from '../components/common/PrimaryButton';
 import { formatRelativeDate } from '../utils/dateFormat';
 import { getAnnouncementById } from '../api/announcementService';
 import { Announcement } from '../types/announcement';
@@ -85,13 +88,9 @@ export default function AnnouncementDetail() {
           {announcement.title}
         </Typography>
 
-        {/* Tags (Urgent + tags standards) */}
-        <Box sx={{ mb: 2 }}>
+        {/* Tous les tags sur une seule ligne avec wrap */}
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center', mb: 2 }}>
           <AnnouncementTags isUrgent={announcement.isUrgent} tags={announcement.tags} variant="detail" />
-        </Box>
-
-        {/* Tags info (Location, Salaire, Type de contrat) */}
-        <Box sx={{ mb: 2 }}>
           <AnnouncementInfoTags
             location={announcement.location}
             contractType={announcement.contractType}
@@ -118,10 +117,27 @@ export default function AnnouncementDetail() {
           </Typography>
         </Stack>
 
-        {/* Description */}
-        <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-          {announcement.description}
-        </Typography>
+        {/* Bouton Postuler */}
+        <Box sx={{ mb: 3 }}>
+          <PrimaryButton fullWidth>
+            Postuler
+          </PrimaryButton>
+        </Box>
+
+        {/* Bloc détails de l'annonce */}
+        <AnnouncementDetailsBlock
+          missionDetails={announcement.missionDetails}
+          advantages={announcement.advantages}
+          process={announcement.process}
+        />
+
+        {/* Bloc profil recherché (avec compétences en texte) */}
+        <Box sx={{ mt: 3 }}>
+          <AnnouncementProfileBlock
+            profileRequired={announcement.profileRequired}
+            skillsRequired={announcement.skillsRequired}
+          />
+        </Box>
       </Box>
     </DetailLayout>
   );

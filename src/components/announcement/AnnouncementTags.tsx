@@ -11,7 +11,7 @@ export default function AnnouncementTags({ isUrgent = false, tags = [], variant 
   const isDetail = variant === 'detail';
 
   return (
-    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+    <>
       {isUrgent && (
         <Chip
           icon={<FlashOnIcon />}
@@ -66,6 +66,6 @@ export default function AnnouncementTags({ isUrgent = false, tags = [], variant 
           }}
         />
       )}
-    </Box>
+    </>
   );
 }

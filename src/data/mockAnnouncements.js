@@ -9,11 +9,15 @@ export const mockAnnouncements = [
       avatar: null,
     },
     createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 heures ago
-    tags: ['Montage', 'Audiovisuel'],
+    tags: ['Montage', 'Audiovisuel'], 
     location: 'Lyon',
     isUrgent: false,
     contractType: 'contract',
     imageUrl: null,
+    // exactSalary
+    // minSalary
+    // maxSalary
+
   },
   {
     id: 2,

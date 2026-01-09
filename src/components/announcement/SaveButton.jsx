@@ -10,11 +10,9 @@ export default function SaveButton({ isSaved = false, onToggle }) {
         onToggle?.();
       }}
       sx={{
-        position: 'absolute',
-        top: 12,
-        right: 12,
         color: isSaved ? 'primary.main' : 'text.secondary',
         backgroundColor: 'transparent',
+        padding: 0,
         '&:hover': {
           backgroundColor: 'transparent',
           color: 'primary.main',

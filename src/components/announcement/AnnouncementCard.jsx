@@ -14,7 +14,6 @@ export default function AnnouncementCard({ announcement, isSaved = false, onTogg
     navigate(`/announcement/${announcement.id}`);
   };
 
-  // Format personnalisé : "Il y a 3j" au lieu de "environ 3 jours"
   const formattedDate = formatDistanceToNow(new Date(announcement.createdAt), {
     locale: fr,
   })
@@ -32,7 +31,6 @@ export default function AnnouncementCard({ announcement, isSaved = false, onTogg
     <Card
       onClick={handleClick}
       sx={{
-        position: 'relative',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
         borderRadius: '35px',
@@ -43,8 +41,6 @@ export default function AnnouncementCard({ announcement, isSaved = false, onTogg
         },
       }}
     >
-      <SaveButton isSaved={isSaved} onToggle={() => onToggleSave?.(announcement.id)} />
-
       <AnnouncementImage imageUrl={announcement.imageUrl} title={announcement.title} />
 
       <CardContent
@@ -52,14 +48,17 @@ export default function AnnouncementCard({ announcement, isSaved = false, onTogg
           px: '24px',
           py: '20px',
           '&:last-child': {
-            paddingBottom: '20px', // Override MUI default padding-bottom
+            paddingBottom: '20px',
           },
         }}
       >
-        {/* Titre */}
-        <Typography sx={{ fontSize: '20px', fontWeight: 700, mb: 2 }}>
-          {announcement.title}
-        </Typography>
+        {/* Titre + Bouton Save */}
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, mb: 2 }}>
+          <Typography sx={{ fontSize: '20px', fontWeight: 700, flex: 1 }}>
+            {announcement.title}
+          </Typography>
+          <SaveButton isSaved={isSaved} onToggle={() => onToggleSave?.(announcement.id)} />
+        </Box>
 
         {/* Auteur */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>

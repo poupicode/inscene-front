@@ -74,11 +74,11 @@ export default function ProfileSetup() {
 
   const getProgress = (): number => {
     switch (currentStep) {
-      case 1: return 0;
-      case 2: return 25;
-      case 3: return 50;
-      case 4: return 75;
-      case 5: return 100;
+      case 1: return 0; // WelcomeStep
+      case 2: return 25; // PersonalInfoStep
+      case 3: return 50; // ProfessionalStep
+      case 4: return 75; // AchievementsStep
+      case 5: return 100; // CompletionStep
       default: return 0;
     }
   };

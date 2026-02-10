@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
+import RootLayout from '../components/RootLayout';
 
 // Pages
 import Home from '../pages/Home';
@@ -10,12 +11,20 @@ import Account from '../pages/Account';
 import Login from '../pages/Login';
 import AnnouncementDetail from '../pages/AnnouncementDetail';
 import UserProfile from '../pages/UserProfile';
+import Onboarding from '../pages/Onboarding';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <MainLayout />,
+    element: <RootLayout />,
     children: [
+      {
+        path: '/onboarding',
+        element: <Onboarding />,
+      },
+      {
+        path: '/',
+        element: <MainLayout />,
+        children: [
       {
         index: true,
         element: <Home />,
@@ -47,6 +56,8 @@ export const router = createBrowserRouter([
       {
         path: 'profile/:id',
         element: <UserProfile />,
+      },
+        ],
       },
     ],
   },

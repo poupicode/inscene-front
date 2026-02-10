@@ -1,23 +1,65 @@
 import api from './client';
-import { User } from '../types/user';
+import { User, SocialNetwork } from '../types/user';
 
 interface UserResponse {
     id: number;
     email: string;
+    type?: string;
+    role?: string;
     name?: string;
     avatarUrl?: string;
     description?: string;
     createdAt: string;
+    isActive?: boolean;
+    socialLinks?: string[];
+    location?: string[];
+    socialNetworks?: SocialNetwork[];
+
+    // Individual fields
+    firstName?: string;
+    lastName?: string;
+    dateOfBirth?: string;
+    experience?: string;
+
+    // Enterprise fields
+    enterpriseName?: string;
+    address?: string;
+    culture?: string;
+    activities?: string;
+    practicalInfo?: string;
+    websiteUrl?: string;
+    contactNumber?: string;
 }
 
 const mapUserResponse = (response: UserResponse): User => {
     return {
         id: response.id,
         email: response.email,
+        type: response.type,
+        role: response.role,
         name: response.name,
         avatarUrl: response.avatarUrl,
         description: response.description,
         createdAt: response.createdAt,
+        isActive: response.isActive,
+        socialLinks: response.socialLinks,
+        location: response.location,
+        socialNetworks: response.socialNetworks,
+
+        // Individual fields
+        firstName: response.firstName,
+        lastName: response.lastName,
+        dateOfBirth: response.dateOfBirth,
+        experience: response.experience,
+
+        // Enterprise fields
+        enterpriseName: response.enterpriseName,
+        address: response.address,
+        culture: response.culture,
+        activities: response.activities,
+        practicalInfo: response.practicalInfo,
+        websiteUrl: response.websiteUrl,
+        contactNumber: response.contactNumber,
     };
 };
 

@@ -1,4 +1,4 @@
-import { Box, Chip } from '@mui/material';
+import { Chip } from '@mui/material';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 
 interface AnnouncementTagsProps {

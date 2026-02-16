@@ -10,14 +10,17 @@ import PrimaryButton from '../components/common/PrimaryButton';
 import { formatRelativeDate } from '../utils/dateFormat';
 import { getAnnouncementById } from '../api/announcementService';
 import { Announcement } from '../types/announcement';
+import { useFavorites } from '../hooks/useFavorites';
 
 export default function AnnouncementDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isSaved, setIsSaved] = useState(false);
+  const { isSaved: checkSaved, toggleSave } = useFavorites();
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const announcementId = id ? parseInt(id) : 0;
 
   useEffect(() => {
     const fetchAnnouncement = async () => {
@@ -40,7 +43,7 @@ export default function AnnouncementDetail() {
   }, [id]);
 
   const handleToggleSave = () => {
-    setIsSaved((prev) => !prev);
+    toggleSave(announcementId);
   };
 
   const handleAuthorClick = () => {
@@ -72,7 +75,7 @@ export default function AnnouncementDetail() {
   const displayDate = formatRelativeDate(announcement.createdAt);
 
   return (
-    <DetailLayout isSaved={isSaved} onToggleSave={handleToggleSave}>
+    <DetailLayout isSaved={checkSaved(announcementId)} onToggleSave={handleToggleSave}>
       <Box sx={{ p: 2.5 }}>
         {/* Auteur avec avatar */}
         <Box

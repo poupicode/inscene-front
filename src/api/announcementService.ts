@@ -33,7 +33,7 @@ interface AnnouncementResponse {
 /**
  * Transforme une réponse API en objet Announcement pour le front
  */
-function transformAnnouncementResponse(response: AnnouncementResponse): Announcement {
+export function transformAnnouncementResponse(response: AnnouncementResponse): Announcement {
   return {
     id: response.id,
     title: response.title || 'Sans titre',

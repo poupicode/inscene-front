@@ -1,5 +1,5 @@
 import api from './client';
-import { User, SocialNetwork } from '../types/user';
+import { User, SocialNetwork, UserFile, Job } from '../types/user';
 
 interface UserResponse {
     id: number;
@@ -15,11 +15,17 @@ interface UserResponse {
     location?: string[];
     socialNetworks?: SocialNetwork[];
 
+    // Files
+    files?: UserFile[];
+    pictures?: UserFile[];
+    videos?: UserFile[];
+
     // Individual fields
     firstName?: string;
     lastName?: string;
     dateOfBirth?: string;
     experience?: string;
+    jobs?: Job[];
 
     // Enterprise fields
     enterpriseName?: string;
@@ -46,11 +52,17 @@ const mapUserResponse = (response: UserResponse): User => {
         location: response.location,
         socialNetworks: response.socialNetworks,
 
+        // Files
+        files: response.files,
+        pictures: response.pictures,
+        videos: response.videos,
+
         // Individual fields
         firstName: response.firstName,
         lastName: response.lastName,
         dateOfBirth: response.dateOfBirth,
         experience: response.experience,
+        jobs: response.jobs,
 
         // Enterprise fields
         enterpriseName: response.enterpriseName,

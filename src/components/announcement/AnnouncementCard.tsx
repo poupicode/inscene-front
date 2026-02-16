@@ -30,7 +30,7 @@ export default function AnnouncementCard({ announcement, isSaved = false, onTogg
         cursor: 'pointer',
         transition: 'all 0.2s ease',
         borderRadius: '35px',
-        backgroundColor: 'primary.extraLight',
+        backgroundColor: 'secondary.light',
         '&:hover': {
           transform: 'translateY(-2px)',
           // boxShadow: '0px 4px 16px rgba(0,0,0,0.12)',

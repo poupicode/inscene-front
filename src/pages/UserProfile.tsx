@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Avatar, CircularProgress, Stack, Button, Divider, Chip, Tabs, Tab } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import DetailLayout from '../components/layout/DetailLayout';
 import PrimaryButton from '../components/common/PrimaryButton';
 import SocialIcon from '../components/user/SocialIcon';
 import { getUserById } from '../api/userService';
-import { User } from '../types/user';
+import { User, UserFile } from '../types/user';
 import { parseJwt } from '../utils/jwt';
+import JustifiedPhotoGrid from '../components/user/JustifiedPhotoGrid';
 
 interface UserProfileProps {
     userId?: number;
@@ -93,12 +95,22 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
         ? user.location.join(', ')
         : null;
 
-    // Activities (convertir string en array si nécessaire)
-    const activitiesArray = user.activities
-        ? typeof user.activities === 'string'
+    // Activités : jobs pour individual, activities (string) pour enterprise
+    const activitiesTags: string[] = user.type === 'individual'
+        ? (user.jobs || []).map(j => j.name)
+        : user.activities
             ? user.activities.split(',').map(a => a.trim())
-            : []
-        : [];
+            : [];
+
+    // Fichiers par catégorie
+    const pictures = (user.pictures || []);
+    const videos = (user.videos || []);
+    const otherFiles = (user.files || []).filter(
+        f => f.category !== 'Picture' && f.category !== 'Video' && f.category !== 'Diploma'
+    );
+    const diplomas = (user.files || []).filter(f => f.category === 'Diploma');
+
+    const hasMedia = pictures.length > 0 || videos.length > 0 || otherFiles.length > 0;
 
     return (
         <DetailLayout>
@@ -116,7 +128,7 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
                     />
                 </Box>
 
-                {/* Nom Prénom en capitalize */}
+                {/* Nom en capitalize */}
                 <Typography sx={{ fontSize: '24px', fontWeight: 700, textAlign: 'center', mb: 0.5 }}>
                     {displayName}
                 </Typography>
@@ -136,7 +148,7 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
                     </Box>
                 )}
 
-                {/* 3 Boutons d'action */}
+                {/* Boutons d'action */}
                 <Stack direction="row" spacing={1.5} sx={{ mb: 3 }}>
                     <PrimaryButton fullWidth sx={{ padding: '8px 13px', borderRadius: '50px' }}>
                         Suivre
@@ -185,7 +197,7 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
                     )}
                 </Stack>
 
-                {/* Conteneur Social Links */}
+                {/* Social Links */}
                 {user.socialNetworks && user.socialNetworks.length > 0 && (
                     <Box
                         sx={{
@@ -203,20 +215,16 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
                     </Box>
                 )}
 
-                {/* Divider horizontal */}
                 <Divider />
 
                 {/* Section Activités */}
-                <Box sx={{ pt: 6, pb: 6 }}>
-                    {/* Titre "Activités" */}
-                    <Typography sx={{ fontSize: '20px', fontWeight: 600, mb: 2, textAlign: 'center' }}>
-                        Activités
-                    </Typography>
-
-                    {/* Tags d'activités */}
-                    {activitiesArray.length > 0 && (
+                {activitiesTags.length > 0 && (
+                    <Box sx={{ pt: 6, pb: 6 }}>
+                        <Typography sx={{ fontSize: '20px', fontWeight: 600, mb: 2, textAlign: 'center' }}>
+                            Activités
+                        </Typography>
                         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
-                            {activitiesArray.map((activity, index) => (
+                            {activitiesTags.map((activity, index) => (
                                 <Chip
                                     key={index}
                                     label={activity}
@@ -231,66 +239,112 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
                                 />
                             ))}
                         </Box>
-                    )}
-                </Box>
+                    </Box>
+                )}
 
-                {/* Onglets horizontaux */}
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-                    <Tabs
-                        value={activeTab}
-                        onChange={handleTabChange}
-                        variant="fullWidth"
-                        aria-label="onglets de contenu"
-                        sx={{
-                            '& .MuiTab-root': {
-                                textTransform: 'none',
-                                fontSize: '16px',
-                                fontWeight: 500,
-                                flex: 1,
-                            },
-                        }}
-                    >
-                        <Tab label="Photos" />
-                        <Tab label="Vidéos" />
-                        <Tab label="Fichiers" />
-                    </Tabs>
-                </Box>
+                {/* Onglets Photos / Vidéos / Fichiers */}
+                {hasMedia && (
+                    <>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+                            <Tabs
+                                value={activeTab}
+                                onChange={handleTabChange}
+                                variant="fullWidth"
+                                aria-label="onglets de contenu"
+                                sx={{
+                                    '& .MuiTab-root': {
+                                        textTransform: 'none',
+                                        fontSize: '16px',
+                                        fontWeight: 500,
+                                        flex: 1,
+                                    },
+                                }}
+                            >
+                                <Tab label={`Photos${pictures.length > 0 ? ` (${pictures.length})` : ''}`} />
+                                <Tab label={`Vidéos${videos.length > 0 ? ` (${videos.length})` : ''}`} />
+                                <Tab label={`Fichiers${otherFiles.length > 0 ? ` (${otherFiles.length})` : ''}`} />
+                            </Tabs>
+                        </Box>
 
-                {/* Contenu des onglets */}
-                <Box sx={{ py: 3 }}>
-                    {activeTab === 0 && (
-                        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
-                            Aucun contenu pour l'instant
-                        </Typography>
-                    )}
-                    {activeTab === 1 && (
-                        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
-                            Aucun contenu pour l'instant
-                        </Typography>
-                    )}
-                    {activeTab === 2 && (
-                        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
-                            Aucun contenu pour l'instant
-                        </Typography>
-                    )}
-                </Box>
+                        <Box sx={{ py: 3 }}>
+                            {activeTab === 0 && (
+                                pictures.length > 0 ? (
+                                    <JustifiedPhotoGrid pictures={pictures} />
+                                ) : (
+                                    <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
+                                        Aucune photo
+                                    </Typography>
+                                )
+                            )}
+                            {activeTab === 1 && (
+                                videos.length > 0 ? (
+                                    <Stack spacing={2}>
+                                        {videos.map((vid) => (
+                                            <Box key={vid.id} sx={{ borderRadius: 2, overflow: 'hidden', bgcolor: '#000' }}>
+                                                {vid.url ? (
+                                                    <video
+                                                        src={vid.url}
+                                                        controls
+                                                        style={{ width: '100%', display: 'block' }}
+                                                    />
+                                                ) : (
+                                                    <Box sx={{ p: 3, textAlign: 'center' }}>
+                                                        <Typography sx={{ color: '#fff' }}>{vid.filename}</Typography>
+                                                    </Box>
+                                                )}
+                                            </Box>
+                                        ))}
+                                    </Stack>
+                                ) : (
+                                    <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
+                                        Aucune vidéo
+                                    </Typography>
+                                )
+                            )}
+                            {activeTab === 2 && (
+                                otherFiles.length > 0 ? (
+                                    <Stack spacing={1}>
+                                        {otherFiles.map((file) => (
+                                            <FileItem key={file.id} file={file} />
+                                        ))}
+                                    </Stack>
+                                ) : (
+                                    <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
+                                        Aucun fichier
+                                    </Typography>
+                                )
+                            )}
+                        </Box>
+                    </>
+                )}
 
                 {/* Section Présentation */}
                 {user.description && (
                     <Box sx={{ pt: 6, pb: 6 }}>
-                        {/* Titre "Présentation" */}
                         <Typography sx={{ fontSize: '20px', fontWeight: 600, mb: 2, textAlign: 'center' }}>
                             Présentation
                         </Typography>
-
-                        {/* Texte description */}
                         <Typography sx={{ fontSize: '15px', fontWeight: 400, color: '#000000', textAlign: 'left' }}>
                             {user.description}
                         </Typography>
                     </Box>
                 )}
 
-                {/* DEBUG INFO - Afficher toutes les données brutes */}
+                {/* Section Diplômes et reconnaissances */}
+                {diplomas.length > 0 && (
+                    <Box sx={{ pt: 3, pb: 6 }}>
+                        <Typography sx={{ fontSize: '20px', fontWeight: 600, mb: 2, textAlign: 'center' }}>
+                            Diplômes et reconnaissances
+                        </Typography>
+                        <Stack spacing={1}>
+                            {diplomas.map((file) => (
+                                <FileItem key={file.id} file={file} />
+                            ))}
+                        </Stack>
+                    </Box>
+                )}
+
+                {/* DEBUG INFO */}
                 <Box sx={{ mt: 4, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
                     <Typography sx={{ fontSize: '14px', fontWeight: 600, mb: 1 }}>
                         Debug - Toutes les données reçues:
@@ -301,5 +355,41 @@ export default function UserProfile({ userId: propUserId }: UserProfileProps = {
                 </Box>
             </Box>
         </DetailLayout>
+    );
+}
+
+function FileItem({ file }: { file: UserFile }) {
+    const sizeLabel = file.size >= 1000000
+        ? `${(file.size / 1000000).toFixed(1)} Mo`
+        : `${Math.round(file.size / 1000)} Ko`;
+
+    return (
+        <Box
+            component={file.url ? 'a' : 'div'}
+            href={file.url || undefined}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                p: 1.5,
+                borderRadius: 2,
+                bgcolor: '#F2F6FC',
+                textDecoration: 'none',
+                color: 'inherit',
+                '&:hover': file.url ? { bgcolor: '#E3ECF7' } : {},
+            }}
+        >
+            <InsertDriveFileOutlinedIcon sx={{ color: 'primary.main', fontSize: 28 }} />
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {file.filename}
+                </Typography>
+                <Typography sx={{ fontSize: '12px', color: 'text.secondary' }}>
+                    {file.extension.toUpperCase()} - {sizeLabel}
+                </Typography>
+            </Box>
+        </Box>
     );
 }

@@ -20,6 +20,8 @@ export default function OnboardingIntro({ onNext }: OnboardingIntroProps) {
                     flex: 1,
                     position: 'relative',
                     overflow: 'hidden',
+                    backgroundColor: '#E4E7E8',
+
                 }}
             >
                 <Box

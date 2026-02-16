@@ -4,10 +4,11 @@ import { usePageLayout } from '../hooks/usePageLayout';
 import AnnouncementCard from '../components/announcement/AnnouncementCard';
 import { getAnnouncements } from '../api/announcementService';
 import { Announcement } from '../types/announcement';
+import { useFavorites } from '../hooks/useFavorites';
 
 export default function Home() {
   usePageLayout();
-  const [savedAnnouncements, setSavedAnnouncements] = useState<number[]>([]);
+  const { isSaved, toggleSave } = useFavorites();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,14 +30,6 @@ export default function Home() {
 
     fetchAnnouncements();
   }, []);
-
-  const handleToggleSave = (announcementId: number) => {
-    setSavedAnnouncements((prev) =>
-      prev.includes(announcementId)
-        ? prev.filter((id) => id !== announcementId)
-        : [...prev, announcementId]
-    );
-  };
 
   if (loading) {
     return (
@@ -71,8 +64,8 @@ export default function Home() {
             <AnnouncementCard
               key={announcement.id}
               announcement={announcement}
-              isSaved={savedAnnouncements.includes(announcement.id)}
-              onToggleSave={handleToggleSave}
+              isSaved={isSaved(announcement.id)}
+              onToggleSave={toggleSave}
             />
           ))}
         </Stack>
